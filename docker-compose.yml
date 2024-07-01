@@ -9,5 +9,15 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
 
+  kibana:
+    image: kibana:8.14.0
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
 volumes:
   esdata01:
