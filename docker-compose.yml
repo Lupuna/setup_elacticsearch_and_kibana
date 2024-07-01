@@ -1,33 +1,13 @@
-version: '3.8'
-
 services:
-  web-app:
-    build:
-      context: .
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./app:/app
-    environment:
-      - DB_NAME=db.sqlite3
-    command: >
-      sh -c "python manage.py runserver 0.0.0.0:8000"
-    depends_on:
-      -   elasticsearch
-
   elasticsearch:
-    image: elasticsearch:8.14.1
-    container_name: elasticsearch
+    image: elasticsearch:8.14.0
+    volumes:
+      - esdata01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
     environment:
       - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-      - ELASTIC_PASSWORD=changeme
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    volumes:
-      - esdata:/usr/share/elasticsearch/data
+      - xpack.security.enabled=false
 
 volumes:
-  esdata:
-    driver: local
+  esdata01:
